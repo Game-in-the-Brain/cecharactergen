@@ -683,7 +683,7 @@ Updates/rollbacks NEVER affect user data:
 - [ ] All 24 careers fully authored in `careers.json` (not stubs)
 - [ ] Each file validates against its schema (no missing required fields)
 - [ ] `rules.json` correctly encodes both CE and Mneme rulesets
-- [ ] `species.json` has at minimum: Terrestrial Human, Low-G Human, Esper, Merfolk
+- [ ] `species.json` has at minimum: Terran, Voidborn, Jovian, Half-Jovian, Esper, Merfolk
 - [ ] Name pools in `cultures_names.json` are real (no placeholder arrays)
 - [ ] A human review pass confirms career data matches wiki source (MECH-B)
 
@@ -869,7 +869,7 @@ This describes what the user **sees** as the engine runs MECH-11. The generation
 
 | Step | User Sees | Tile Updated |
 |------|-----------|-------------|
-| 1 | "Species: Terrestrial Human" in log | Header Tile |
+| 1 | "Species: Terran" in log | Header Tile |
 | 2 | STR/DEX/END/INT/EDU/SOC rolled with DM | Characteristics Tile |
 | 3 | Homeworld: High Tech World; Background: Computer-0 | Connections Tile |
 | 4 | Pre-career education: skipped (or University) | Header Tile |
@@ -971,11 +971,13 @@ Each FR follows this format: ID, milestone, priority, dependencies, description,
 ### FR-M0-02: Author `species.json`
 **Milestone:** M0 | **Priority:** Critical | **Depends On:** DATA_ARCHITECTURE.md §DA-3.1, MECH-4.5
 
-**Description:** Populate `species.json` with at minimum 4 species: Terrestrial Human (enabled), Low-G Human (enabled, toggle-gated), Esper (disabled by default), Merfolk (disabled by default).
+**Description:** Populate `species.json` with at minimum 6 species: Terran (enabled), Voidborn (enabled, toggle-gated), Jovian (disabled by default, toggle-gated), Half-Jovian (disabled by default, toggle-gated), Esper (disabled by default), Merfolk (disabled by default).
 
 **Acceptance Criteria:**
-- [ ] Terrestrial Human: all characteristics `2d6`, no modifiers, enabled
-- [ ] Low-G Human: STR `dis1`, DEX `adv1`, END `dis1`, SOC `2d6-1`, enabled, `backgroundsAllowed: "space_only"`
+- [ ] Terran: all characteristics `2d6`, no modifiers, enabled
+- [ ] Voidborn: STR `dis1`, DEX `adv1`, END `dis1`, SOC `2d6-1`, enabled, `backgroundsAllowed: "space_only"`, traits: chlorosymbiont, zero_g_native, high_g_intolerance
+- [ ] Jovian: STR `adv1+1`, END `adv1+1`, all others `2d6`, disabled, traits: radosymbiont_protection, symbiont_hunger, low_g_intolerance_jovian, high_g_adaptation
+- [ ] Half-Jovian: all `2d6` base, disabled, adaptation spectrum via 1d6 roll at creation (MECH-4.8.4)
 - [ ] Esper: psionic trait, enabled false
 - [ ] Merfolk: amphibious/aquatic/water_dependent traits, enabled false
 - [ ] All roll specs use notation defined in MECH-4.5
@@ -990,7 +992,7 @@ Each FR follows this format: ID, milestone, priority, dependencies, description,
 **Acceptance Criteria:**
 - [ ] `activeRuleset` defaults to `"mneme"`
 - [ ] Both rulesets have all fields from DA-3.18 schema
-- [ ] All toggles present: psionics, lowGHuman, preCareerEducation, allowDeath, maxTerms
+- [ ] All toggles present: psionics, voidborn, jovian, preCareerEducation, allowDeath, maxTerms
 - [ ] Mneme Quick Fix values correctly encoded (MECH-2.2)
 
 ---
@@ -1347,7 +1349,7 @@ Each FR follows this format: ID, milestone, priority, dependencies, description,
 **Acceptance Criteria:**
 - [ ] Contains all enabled and disabled species with full schemas
 - [ ] Each species has: id, name, description, enabled, characteristicRolls, modifiers, startingSkills, traits, backgroundsAllowed
-- [ ] Matches example in DATA_ARCHITECTURE.md §DA-3.1 (4 species: Terrestrial Human, Low-G Human, Esper, Merfolk)
+- [ ] Matches example in DATA_ARCHITECTURE.md §DA-3.1 (6 species: Terran, Voidborn, Jovian, Half-Jovian, Esper, Merfolk)
 
 *(This FR is clear — no clarification needed.)*
 
@@ -1707,7 +1709,7 @@ Each FR follows this format: ID, milestone, priority, dependencies, description,
 - [ ] Log shows full generation history
 
 > **CLARIFY:** Decision weights for "random" — specify for each choice point:
-> - Species: Equal probability across enabled species? Or weighted (e.g., 70% Terrestrial Human)?
+> - Species: Equal probability across enabled species? Or weighted (e.g., 70% Terran)?
 > - Career: Equal probability? Weighted by category?
 > - Number of terms: What distribution? Uniform 1-7? Weighted toward 3-5?
 > - Cash vs material benefits: Random per roll? Prefer cash until 3 used?
@@ -2144,7 +2146,7 @@ This section provides reference material for the Cepheus Engine rules implemente
 | **M2.5: Install UX & Settings** | Install prompt, auto-save, security, snapshots, CI/CD | ⏳ Pending |
 | **M2.6: Version Control** | Version management, update prompts, rollback, channels | ⏳ Pending |
 | **M2.7: Tables In Play** | Active table selection per category, custom tables | ⏳ Pending |
-| **M3: Full Career System** | All 24 careers, aging, mustering, equipment, Low-G Human | ⏳ Blocked on M2.7 |
+| **M3: Full Career System** | All 24 careers, aging, mustering, equipment, Voidborn/Jovian species | ⏳ Blocked on M2.7 |
 | **M4: Persistence & Export** | Character library, batch generation, advanced export | ⏳ Pending |
 
 ### FR-to-Milestone Mapping

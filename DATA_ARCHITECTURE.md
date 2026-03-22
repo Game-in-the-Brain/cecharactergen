@@ -64,10 +64,10 @@ Species definitions with characteristic roll specifications and traits.
     "version": "1.0",
     "description": "Species definitions with characteristic modifiers"
   },
-  "terrestrial_human": {
-    "id": "terrestrial_human",
-    "name": "Terrestrial Human",
-    "description": "Standard humans from Earth or high-G habitats",
+  "terran": {
+    "id": "terran",
+    "name": "Terran",
+    "description": "Baseline humanity. Standard generation, no toggles required.",
     "enabled": true,
     "characteristicRolls": {
       "STR": "2d6",
@@ -82,10 +82,10 @@ Species definitions with characteristic roll specifications and traits.
     "traits": [],
     "backgroundsAllowed": "all"
   },
-  "low_g_human": {
-    "id": "low_g_human",
-    "name": "Low-G Human (Mneme Variant)",
-    "description": "Adapted for low-G habitats (0.3–0.6G). Requires toggles.lowGHuman = true.",
+  "voidborn": {
+    "id": "voidborn",
+    "name": "Voidborn",
+    "description": "Low-G adapted human. Chlorosymbiont metabolic support. Requires toggles.voidborn = true.",
     "enabled": true,
     "characteristicRolls": {
       "STR": "dis1",
@@ -100,12 +100,53 @@ Species definitions with characteristic roll specifications and traits.
       "moveCondition": "0.7G+"
     },
     "startingSkills": [
-      { "skill": "Zero-G", "level": 2 },
-      { "skill": "Vacc Suit", "level": 1 },
-      { "skill": "Survival (Habitat)", "level": 1 }
+      { "skill": "Zero-G", "level": 1 },
+      { "skill": "Vacc Suit", "level": 0 }
     ],
-    "traits": ["half_weight", "low_gravity_adaptation"],
+    "traits": ["half_weight", "low_gravity_adaptation", "chlorosymbiont", "zero_g_native", "high_g_intolerance"],
     "backgroundsAllowed": "space_only"
+  },
+  "jovian": {
+    "id": "jovian",
+    "name": "Jovian",
+    "description": "High-G adapted human with Radosymbiont radiation resistance. Requires toggles.jovian = true.",
+    "enabled": false,
+    "characteristicRolls": {
+      "STR": "adv1+1",
+      "DEX": "2d6",
+      "END": "adv1+1",
+      "INT": "2d6",
+      "EDU": "2d6",
+      "SOC": "2d6"
+    },
+    "modifiers": {},
+    "startingSkills": [
+      { "skill": "Zero-G", "level": 0 },
+      { "skill": "Vacc Suit", "level": 1 }
+    ],
+    "traits": ["radosymbiont_protection", "symbiont_hunger", "low_g_intolerance_jovian", "high_g_adaptation", "pressure_adaptation", "secondary_emission"],
+    "backgroundsAllowed": "all"
+  },
+  "half_jovian": {
+    "id": "half_jovian",
+    "name": "Half-Jovian",
+    "description": "Jovian-Terran hybrid. Adaptation level rolled 1d6 at creation. Requires toggles.jovian = true.",
+    "enabled": false,
+    "characteristicRolls": {
+      "STR": "2d6",
+      "DEX": "2d6",
+      "END": "2d6",
+      "INT": "2d6",
+      "EDU": "2d6",
+      "SOC": "2d6"
+    },
+    "modifiers": {
+      "adaptationLevel": "roll_1d6",
+      "_note": "Apply adaptation modifiers from MECH-4.8.4 table after rolling"
+    },
+    "startingSkills": [],
+    "traits": ["half_jovian_adaptation_spectrum"],
+    "backgroundsAllowed": "all"
   },
   "esper": {
     "id": "esper",
@@ -248,7 +289,7 @@ Data model for completed and in-progress characters stored in IndexedDB. This is
   "id": "uuid-v4",
   "name": "John Smith",
   "age": 34,
-  "species": "terrestrial_human",
+  "species": "terran",
   "homeworld": "high_tech_world",
   "background": "orbital_habitat",
   "upp": "787A9C",
@@ -874,7 +915,8 @@ Active ruleset selection and variant toggles.
   },
   "toggles": {
     "psionics": false,
-    "lowGHuman": true,
+    "voidborn": true,
+    "jovian": false,
     "preCareerEducation": true,
     "allowDeath": true,
     "maxTerms": 7,

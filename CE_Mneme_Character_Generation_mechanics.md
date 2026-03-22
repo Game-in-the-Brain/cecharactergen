@@ -101,7 +101,7 @@ Roll (2+X) d6, keep the **highest 2** dice. Sum those two. Result: 2–12 (weigh
 - `adv1` = Roll 3d6, keep highest 2
 - `adv2` = Roll 4d6, keep highest 2
 
-Used for: Low-G Human DEX (`adv1`), other species with notable characteristics.
+Used for: Voidborn DEX (`adv1`), other species with notable characteristics.
 
 #### 3.4.3 Disadvantage Roll (DisX) — Mneme Variant [MECH-3.4.3]
 
@@ -110,7 +110,7 @@ Roll (2+X) d6, keep the **lowest 2** dice. Sum those two. Result: 2–12 (weight
 - `dis1` = Roll 3d6, keep lowest 2
 - `dis2` = Roll 4d6, keep lowest 2
 
-Used for: Low-G Human STR (`dis1`), END (`dis1`), other species with weak characteristics.
+Used for: Voidborn STR (`dis1`), END (`dis1`), other species with weak characteristics.
 
 #### 3.4.4 Modified Rolls [MECH-3.4.4]
 
@@ -191,25 +191,56 @@ PSI generation (when permitted): `2D6 − terms served`.
 
 ### 4.5 Species Characteristic Roll Specifications [MECH-4.5]
 
-Each species defines roll specifications per characteristic. Standard notation:
+Each species defines roll specifications per characteristic. The notation encodes both dice count and keep rule:
 
-| Notation | Meaning |
-|----------|---------|
-| `2d6` | Roll 2D6 normally |
-| `adv1` | Roll 3d6, keep highest 2 (MECH-3.4.2) |
-| `dis1` | Roll 3d6, keep lowest 2 (MECH-3.4.3) |
-| `2d6-1` | Roll 2D6, subtract 1 |
-| `2d6+2` | Roll 2D6, add 2 |
+| Notation | Dice rolled | Keep | Result range |
+|----------|-------------|------|--------------|
+| `2d6` | 2d6 | both | 2–12 |
+| `2d6+N` | 2d6 | both, then add N | (3–13 for N=1) |
+| `2d6-N` | 2d6 | both, then subtract N | (1–11 for N=1) |
+| `adv1` | 3d6 | highest 2 | 2–12, skewed high |
+| `adv2` | 4d6 | highest 2 | 2–12, more skewed high |
+| `adv1+N` | 3d6 | highest 2, then add N | (3–13 for N=1) |
+| `dis1` | 3d6 | lowest 2 | 2–12, skewed low |
+| `dis2` | 4d6 | lowest 2 | 2–12, more skewed low |
 
-**Terrestrial Human** (standard):
-- All characteristics: `2d6`
+See MECH-3.4.2 and MECH-3.4.3 for the roll algorithms. Modifiers apply after keeping.
 
-**Low-G Human** (Mneme variant, requires `toggles.lowGHuman = true`):
-- STR: `dis1`, DEX: `adv1`, END: `dis1`
-- INT: `2d6`, EDU: `2d6`, SOC: `2d6-1`
-- Special: Move −1 in 0.7G+ environments; half effective weight
+---
 
-Full species data is defined in `species.json` (see DATA_ARCHITECTURE.md §DA-3.1).
+**Terran** — baseline human, no toggle required:
+
+| STR | DEX | END | INT | EDU | SOC |
+|-----|-----|-----|-----|-----|-----|
+| `2d6` | `2d6` | `2d6` | `2d6` | `2d6` | `2d6` |
+
+---
+
+**Voidborn** — low-G adapted human, requires `toggles.voidborn = true`:
+
+| STR | DEX | END | INT | EDU | SOC |
+|-----|-----|-----|-----|-----|-----|
+| `dis1` | `adv1` | `dis1` | `2d6` | `2d6` | `2d6-1` |
+
+---
+
+**Jovian** — high-G adapted human, requires `toggles.jovian = true`:
+
+| STR | DEX | END | INT | EDU | SOC |
+|-----|-----|-----|-----|-----|-----|
+| `adv1+1` | `2d6` | `adv1+1` | `2d6` | `2d6` | `2d6` |
+
+*`adv1+1`: roll 3d6, keep highest 2, then add 1. Represents high-G musculature and Radosymbiont metabolic support.*
+
+---
+
+**Half-Jovian** — adaptation spectrum, requires `toggles.jovian = true`:
+
+All six characteristics roll `2d6` (Terran base). Apply modifiers from the adaptation level (MECH-4.8.4) after rolling.
+
+---
+
+Full species data is defined in `species.json` (see DATA_ARCHITECTURE.md §DA-3.1). For species biology, traits, and environmental interaction, see MECH-4.8.
 
 ### 4.6 Alien Species Traits [MECH-4.6]
 
@@ -222,6 +253,8 @@ Species may possess traits that modify generation rules. The following traits ar
 | **Aquatic** | Can breathe underwater; cannot operate out of water without aid (unless also Amphibious) |
 | **Armored** | 1 point natural armor |
 | **Atmospheric Requirements** | Requires unusual atmosphere; needs artificial aid in most environments |
+| **Chlorosymbiont** | With 4h+ full-spectrum light per 24h: food needs halved, O₂ −25%, END +1 for fatigue checks only, Radiation Resistance 1. Without light 48h+: lose all benefits. 1 week without light: −1 END permanent (see MECH-4.8.2). |
+| **Chloro-fade** | Without adequate full-spectrum light for 48h+: Chlorosymbiont benefits lost. After 1 week: −1 END permanently until symbiont repopulated via medical intervention (2d6 weeks treatment). |
 | **Bad First Impression** | Most races start Unfriendly; overcomes after brief interaction |
 | **Caste** | Replaces Social Standing with Caste; social DMs (+ or −) halved when dealing with SOC-using races |
 | **Cold-Blooded** | DM−2 initiative in extreme cold; 1D6 damage per 10 minutes exposure |
@@ -230,24 +263,30 @@ Species may possess traits that modify generation rules. The following traits ar
 | **Feral** | Roll EDU on 1D6 only |
 | **Flyer** | Can fly; must spend minor action per round on movement while aloft |
 | **Great Leaper** | Athletics 0; can jump extra squares per Athletics check Effect |
-| **Half Weight** | Effective carry weight halved (Low-G Human trait) |
+| **Half Weight** | Effective carry weight halved (Voidborn trait) |
 | **Heat Endurance** | No damage from hot weather exposure |
 | **Heavy Gravity Adaptation** | No acclimatization needed in high-G environments |
+| **High-G Intolerance** | Above 0.7G: STR −1, END −1. Above 1.2G: STR −2, END −2. Requires High-G meds (TL10+) or pressure-support suit above 1.2G for extended operation (see MECH-4.8.2). |
 | **Hive Mentality** | Must make INT check to avoid self-risk when group benefit is involved |
 | **Large** | STR/END 3d6 or 4d6; DEX 1d6; life support doubled |
 | **Low Gravity Adaptation** | No acclimatization needed in low-G environments |
+| **Low-G Intolerance (Jovian)** | Below 1.5G: DEX −2. Below 0.5G: DEX −3, STR −2. Zero-G without Zero-G 0+: −2 to all physical tasks (see MECH-4.8.3). |
 | **Low-Light Vision** | Sees twice as far in poor light; retains color/detail |
 | **Natural Pilot** | DM+2 to Piloting and Navigation checks |
 | **Natural Swimmer** | DM+2 to swimming-related checks |
 | **Natural Weapon** | Has claw/bite/stinger; +1 damage; Natural Weapons 0 |
 | **Naturally Curious** | Must make INT check to avoid acting on curiosity |
 | **No Fine Manipulators** | Cannot easily pick up objects or press small controls |
+| **Radosymbiont Protection** | Radiation Resistance 2 normally; Resistance 4 at high radiation flux (Jupiter proximity, reactor work, active belt ops). Subject to Symbiont Hunger. Secondary emission ~2 rads/week to unshielded cohabitants in prolonged contact (see MECH-4.8.3). |
 | **Notable (Characteristic)** | +2 DM when rolling that characteristic; racial maximum +2 |
 | **Psionic** | All members are psionic; determine PSI at start of generation |
+| **Secondary Emission** | Jovian/transplant trait. Unsuited: ~2 rads/week (native) or ~1 rad/week (transplant) to cohabitants in 8h+/day sustained contact over 2+ weeks. Lead-lining suit convention applies. |
 | **Slow Speed** | Movement rate reduced |
 | **Small** | STR/END 1D6; DEX 3D6 |
+| **Symbiont Hunger** | Without background radiation or bloom pack for 2+ weeks: −1 END per week. Recovery: +1 END/day adequate exposure. END 0 from Symbiont Hunger = critically ill (see MECH-4.8.3). |
 | **Weak (Characteristic)** | −2 DM (or other specified penalty) when rolling that characteristic; racial maximum −2 |
 | **Water Dependent** | Must immerse regularly; risks dehydration without water access |
+| **Zero-G Native** | Ignore all zero-G and microgravity penalties. May substitute DEX for STR in zero-G physical tasks. |
 
 ### 4.7 Social Standing & Noble Titles [MECH-4.7]
 
@@ -269,6 +308,253 @@ In universes where nobles exist, SOC values correspond to titles. Noble titles r
 Each SOC point above 9 roughly doubles annual resource flow. Formula: `Income ≈ Base × 2^(SOC − 10)`.
 
 **Alien Social Standing:** Some species use Caste or Charisma instead of SOC. When dealing across such a divide, all SOC DMs (positive or negative) are halved.
+
+---
+
+### 4.8 Species Full Entries [MECH-4.8]
+
+Full biology, traits, career access, and starting skills for each species. Characteristic rolls are in MECH-4.5.
+
+#### 4.8.1 Terran [MECH-4.8.1]
+
+*Homo sapiens — baseline humanity.*
+
+Standard character generation with no modifications. Terran is the default species; all other species require the appropriate `rules.json` toggle.
+
+**Starting skills:** None beyond background skills.
+**Traits:** None.
+**Career access:** Unrestricted.
+**Backgrounds allowed:** All.
+
+**Environmental note:** Terrans in prolonged microgravity (2+ weeks without CJVAP; see MECH-4.10.3) accumulate cephalad fluid shift: −1 END per month, recoverable on return to normal gravity.
+
+---
+
+#### 4.8.2 Voidborn [MECH-4.8.2]
+
+*Homo sapiens vacuensis — "Greens," "Chloros," "Vine-people."*
+
+*Requires `toggles.voidborn = true` in `rules.json`.*
+
+Long-duration spacers, habitat engineers, and zero-G specialists. The Chlorosymbiont (*Cyanobacteria vaculis*) — a colony of engineered cyanobacterial organisms distributed through the circulatory system — performs photosynthesis using the host's CO₂, providing metabolic supplementation and secondary radiation buffering. Voidborn appear faintly green; veins show as bright blue-green traceries, most visible on forearms, neck, and face.
+
+**Characteristic rolls:** See MECH-4.5.
+
+**Starting skills:**
+- Zero-G 1 (free at character creation)
+- Vacc Suit 0
+
+**Traits:**
+
+*Chlorosymbiont — Metabolic Supplement:*
+When the Voidborn has 4+ hours of adequate full-spectrum light (red 660nm, blue 450nm) in the past 24 hours:
+- Food requirements halved
+- Oxygen consumption reduced 25% (extend life support duration accordingly)
+- END effectively +1 for fatigue and endurance checks only (not damage)
+- Radiation Resistance 1
+
+*Chloro-fade:*
+Without adequate light for 48+ hours, the Chlorosymbiont begins to die. Voidborn loses all Chlorosymbiont benefits. After 1 week without light: −1 END permanently until symbiont repopulated (requires medical intervention; 2d6 weeks treatment).
+
+*Zero-G Native:*
+Ignore all zero-G and microgravity penalties. May substitute DEX for STR in zero-G physical tasks.
+
+*High-G Intolerance:*
+In gravity above 0.7G: STR −1, END −1 (cumulative with characteristic modifiers).
+In gravity above 1.2G: STR −2, END −2. Requires High-G medication (TL10+) or vacc suit with active pressure support for extended operations.
+
+*Visible Veins:*
+Chlorosymbiont vascular network makes Voidborn immediately identifiable. Medical scanners detect Chlorosymbiont presence. Disguising requires full skin coverage. Symbiont is non-transmissible without medical procedure; entry restrictions at some stations are unfounded.
+
+**Career access:** Unrestricted. Favored: Belter, Spacer, Scout, Engineer.
+**Backgrounds allowed:** Space only (raised in low-G or zero-G habitats).
+
+---
+
+#### 4.8.3 Jovian [MECH-4.8.3]
+
+*Homo sapiens jovianus — "Spinners," "Beltwalkers," "Rad-boys."*
+
+*Requires `toggles.jovian = true` in `rules.json`.*
+
+Workers and residents of high-G rotating tether habitats (1.2G–1.8G). Dense bone structure, stocky frame, shorter stature (15–20% below Terran average). The Radosymbiont (*Trichofungus radiovora*) — a fungal colony distributed across the skin and concentrated in subdermal bloom organs in the upper back and shoulders — metabolizes ionizing radiation for energy. At high radiation flux, a well-fed Radosymbiont provides near-immunity to standard field exposure. Jovians are mildly radioactive; lead-lining suit convention applies (see Secondary Emission trait).
+
+**Characteristic rolls:** See MECH-4.5.
+
+**Starting skills:**
+- Zero-G 0 (cultural familiarity)
+- Vacc Suit 1 (suit discipline instilled from childhood)
+
+**Traits:**
+
+*Radosymbiont Protection:*
+Radiation Resistance 2 at all times. At high radiation flux (Jupiter proximity, active belt operations, reactor compartments): Radiation Resistance 4.
+
+*Symbiont Hunger:*
+If a Jovian spends more than 2 weeks in a radiation-shielded environment without a bloom pack: −1 END per week until bloom pack use resumes or background radiation exposure occurs. Recovery: +1 END per day of adequate exposure. END 0 from Symbiont Hunger = critically ill.
+
+*Low-G Intolerance:*
+In gravity below 1.5G: DEX −2 (cardiovascular bloating, proprioceptive mismatch; cumulative with characteristic modifier, minimum DEX 1).
+In gravity below 0.5G: DEX −3, STR −2 (vascular pooling).
+In microgravity/zero-G: requires Zero-G skill at level 0+ to function without penalty. Untrained: −2 to all physical tasks; nausea at GM's discretion.
+
+*High-G Adaptation:*
+No penalties in gravity up to 2G. Between 2G and 3G: standard high-G fatigue rules (see MECH-4.9.2). Above 3G: standard rules apply.
+
+*Pressure Adaptation:*
+Acclimated to 2 ATM. In 1 ATM: mild sinus discomfort, reduced olfactory acuity (no mechanical effect). Below 0.8 ATM: −1 to all checks from dysbarism. Above 3 ATM: +1 END for pressure-tolerance checks.
+
+*Secondary Emission:*
+Non-Jovians in sustained close proximity to an unsuited Jovian (8+ hours/day, 2+ consecutive weeks) accumulate ~2 rads/week. Emission-lined vacc suit removes this. Failure to wear emission-lined suit in mixed company is a social offense in Jovian States habitats.
+
+**Career access:** Unrestricted. Favored: Belter, Spacer, Engineer, Marine, Merchant. Low-G Specialist career requires GM approval.
+**Backgrounds allowed:** All (most from Jovian States habitats).
+
+---
+
+#### 4.8.4 Half-Jovian [MECH-4.8.4]
+
+*Jovian × Terran hybrid — adaptation spectrum.*
+
+*Requires `toggles.jovian = true` in `rules.json`.*
+
+Reproduction between Jovians and Terrans is fully viable. Half-Jovian offspring fall on an adaptation spectrum. When a character has a Jovian States background, roll 1d6 to determine adaptation level:
+
+| Roll | Level | Description | STR | END | Radiation Resistance | Low-G Penalty |
+|------|-------|-------------|-----|-----|----------------------|---------------|
+| 1–2 | **Latent** | Appears Terran; minor bone density | +0 | +0 | 1 | None |
+| 3–4 | **Mild** | Slight stockiness; faint mottling | +0 | +1 | 1 | None |
+| 5 | **Moderate** | Visibly stockier; clear mottling | +1 | +1 | 2 | DEX −1 below 1.0G |
+| 6 | **Strong** | Near-full Jovian | Full Jovian stats | Full Jovian | 3 | As Jovian |
+| GM | **Extreme** | Exceptional; rare | +2 | +2 | 4 | High-G tolerance to 2.5G |
+
+Half-Jovians at Moderate level and above are subject to Symbiont Hunger and have detectable Radosymbiont (medical scanners). Bloom packs recommended in shielded environments at Moderate+.
+
+Characteristic rolls: `2d6` all (Terran base), then apply modifiers from adaptation level table.
+
+---
+
+### 4.9 Environmental Conditions [MECH-4.9]
+
+These rules apply to any character in the listed conditions. Species traits (MECH-4.8) modify or override them as noted.
+
+#### 4.9.1 Low-G Conditions [MECH-4.9.1]
+
+Environments below 0.5G are considered low-G for mechanical purposes.
+
+**Unmodified characters (Terrans, Jovians):**
+No immediate penalty. After 2+ weeks of continuous exposure: −1 STR, −1 END (muscle atrophy). Recoverable in 1d6 weeks on return to normal gravity.
+In zero-G without Zero-G skill (level 0+): −1 to all physical tasks.
+
+**Jovians** have additional Low-G Intolerance (MECH-4.8.3) on top of the above.
+
+**Voidborn** ignore all low-G and zero-G penalties (Zero-G Native trait).
+
+**Acquired Low-G Adaptation:**
+Characters with Zero-G 1+ remove the zero-G physical task penalty.
+Long-term residents (6+ months in a given G-band, medically certified): no atrophy penalty for extended residence in that band.
+
+#### 4.9.2 High-G Conditions [MECH-4.9.2]
+
+Environments above 1.5G are considered high-G for mechanical purposes.
+
+**Unmodified characters:**
+
+| Gravity | Penalty | END Check |
+|---------|---------|-----------|
+| 1.5G–2G | −1 to all physical tasks | Every 4 hours (8+) or 1 fatigue |
+| 2G–3G | −2 to all physical tasks | Every 2 hours (8+) or 1 fatigue |
+| Above 3G | −4 to all physical tasks; hostile environment protection required | 1D6 damage/hour unprotected |
+
+**Jovians** have High-G Adaptation: no penalty to 2G; 2G–3G treated as 1.5G–2G.
+
+**Voidborn** have High-G Intolerance (see MECH-4.8.2) in addition to standard high-G penalties.
+
+**Acquired High-G Adaptation:**
+Requires 1d6 months acclimatization in the target G-band. Effect: reduce high-G penalties by one step (1.5G–2G treated as negligible; 2G–3G as 1.5G–2G standard).
+
+#### 4.9.3 High-Radiation Conditions [MECH-4.9.3]
+
+Radiation exposure is measured in rads (cumulative dose).
+
+**Radiation Resistance (Trait):** Reduce all radiation exposure by the Resistance value before applying effects.
+
+**Typical exposure rates:**
+
+| Environment | Rads/day |
+|-------------|----------|
+| Surface of standard world, unshielded | 0.02 |
+| Deep space, unshielded | 0.5 |
+| Active belt operations | 1–5 |
+| Jupiter proximity | 5–50 |
+| Reactor compartment (TL10) | 10–100 |
+
+**Cumulative dose effects (CE Standard):**
+
+| Cumulative Dose | Effect |
+|----------------|--------|
+| Under 50 rads | No effect |
+| 100 rads | −1 END (radiation sickness onset) |
+| 200 rads | −2 STR, −2 END; medical intervention required |
+| 400 rads | Roll on Radiation Sickness table (see injury rules) |
+| 800+ rads | Lethal without immediate TL10+ treatment |
+
+**Radiation Resistance effect on thresholds:** Each point of Resistance reduces the effective accumulated dose for threshold purposes. Resistance 2 effectively halves environmental exposure; Resistance 4 provides near-immunity to all standard field conditions.
+
+**High-Rad Adaptation (acquired):** Requires 6+ months in a moderate radiation environment under medical supervision. Grants Radiation Resistance 1. Does not stack with Radosymbiont Protection.
+
+---
+
+### 4.10 Medical Procedures & Augmentations [MECH-4.10]
+
+#### 4.10.1 Chlorosymbiont Transplant [MECH-4.10.1]
+
+*TL11+. Cost: Cr 40,000 + Cr 2,000/year (immunosuppressants). Surgery downtime: 1 week.*
+
+Terrans and other non-Voidborn may undergo Chlorosymbiont transplantation — introduction of engineered cyanobacterial colony (*Cyanobacteria vaculis*) into the recipient's circulatory system. Requires 3–6 months of immunosuppressants during establishment; maintenance doses required for life.
+
+**Mechanical effect:**
+- Permanent END −1d3 (roll at procedure; not recoverable)
+- Gains all Chlorosymbiont benefits (Metabolic Supplement, Radiation Resistance 1)
+- Subject to Chloro-fade rules (MECH-4.8.2)
+- Green tinge and visible veining develop over 3–6 months
+- High-G Intolerance is **not** acquired (body architecture remains Terran)
+
+*Social note:* Transplanted Terrans occupy contested social space among Voidborn. Terms: "Dye-jobs," "Painted." Attitudes vary by habitat culture.
+
+---
+
+#### 4.10.2 Radosymbiont Transplant [MECH-4.10.2]
+
+*TL11+. Cost: Cr 60,000 + Cr 3,000/year (immunosuppressants). Surgery downtime: 1 week.*
+
+Terrans may undergo Radosymbiont transplantation — introduction of the fungal colony (*Trichofungus radiovora*) to the skin and subdermal tissue. The transplant establishes the surface colony but does not replicate the Jovian's specialized subdermal bloom organs. Transplant recipients receive meaningful but reduced radiation protection compared to native Jovians. Establishment requires 4–8 months of immunosuppressants.
+
+**Mechanical effect:**
+- Permanent END −1d3 (roll at procedure; not recoverable)
+- Radiation Resistance 2 (not 4 — no bloom organs; high-flux Resistance 4 bonus does not apply)
+- Subject to Symbiont Hunger rules (MECH-4.8.3) — bloom pack required in shielded environments
+- Secondary emission at half-Jovian rate: ~1 rad/week to cohabitants in prolonged unshielded contact
+- Faint grey-brown mottling develops over 3–6 months (less pronounced than native Jovians)
+- Low-G Intolerance is **not** acquired; High-G Adaptation is **not** acquired
+
+*Social note:* Native Jovians refer to transplant recipients as "Planted" or "Soft-bloom." The radiation resistance is genuine but conspicuously incomplete — a Planted Terran will not receive the Resistance 4 bonus in high-flux environments that every Wallside worker takes for granted.
+
+---
+
+#### 4.10.3 CJVAP Implant [MECH-4.10.3]
+
+*Cranial Jugular Venous Assist Pump. TL11+. Cost: Cr 45,000. Surgery downtime: 1 week.*
+
+A titanium-polymer peristaltic sleeve fitted around the internal jugular vein, with a skull-base pressure sensor wire and a subcutaneous MCU module with inductive charging coil. The sleeve manages cranial venous drainage in closed-loop feedback — compensating for loss of gravitational venous return in zero-G and providing assisted drainage in high-G environments.
+
+**Mechanical effect:**
+- Terrans with CJVAP do not accumulate the prolonged microgravity END penalty (see MECH-4.8.1)
+- Does not grant Zero-G skill
+- In high-G (1.5G+): reduces high-G penalties by one step (1.5G–2G negligible; 2G–3G as 1.5G–2G standard)
+- Failure mode (power loss): sleeve goes passive; no immediate danger, but ICP drifts within hours in zero-G — medical inconvenience, not emergency
+
+*Design note:* Voidborn solve the same ICP problem genetically via modified jugular smooth muscle. The CJVAP in high-G reversal mode is mechanically stronger than the Voidborn native solution; a Terran with CJVAP can operate in more G-ranges than a pure Voidborn without High-G medication.
 
 ---
 
@@ -648,7 +934,7 @@ Step 7:  Final Details             → MECH-10
 
 Select species from the active `species.json` table. Species determines characteristic roll specifications (MECH-4.5) and starting traits.
 
-Enabled species are determined by `rules.json` toggles (e.g., `toggles.lowGHuman`). Default: Terrestrial Human only.
+Enabled species are determined by `rules.json` toggles (e.g., `toggles.voidborn`). Default: Terran only.
 
 **Output:** Species ID with characteristic roll specs.
 
@@ -668,7 +954,7 @@ For each of the six characteristics, apply the species roll specification (MECH-
 2. Determine background skill allotment: `3 + EDU DM` (MECH-5.1).
 3. First two background skills from Homeworld Skills (MECH-5.2) matching homeworld trade codes/law level.
 4. Remaining skills from Primary Education list (MECH-5.3).
-5. Apply species background restrictions if any (e.g., Low-G Human: space backgrounds only).
+5. Apply species background restrictions if any (e.g., Voidborn: space backgrounds only).
 
 **Output:** Homeworld, background skills at Level 0.
 

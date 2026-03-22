@@ -17,7 +17,12 @@
 |----------|---------|--------|
 | [PRD.md](./PRD.md) | Product Requirements — FRs, milestones, data schemas, GI7B UI Standard | ✅ Current |
 | [PROJECT_NOTES.md](./PROJECT_NOTES.md) | Dev log, GI7B UI Standard, architecture decisions, problems & solutions | ✅ Current |
-| [CE ShipGen](https://github.com/xunema/ce-shipgen) | Canonical GI7B UI Standard reference | ✅ Reference |
+| [DATA_ARCHITECTURE.md](./DATA_ARCHITECTURE.md) | All JSON table schemas, DA-N.N references, naming conventions, generation pipeline order | ✅ Current |
+| [UI_REQUIREMENTS.md](./UI_REQUIREMENTS.md) | UI design decisions — phone-first, accordion UX, tile system, GI7B chrome, all FR-006–FR-010 decisions | ✅ Current |
+| [UPDATE_LOG.md](./UPDATE_LOG.md) | Justin's working log — pre-coding gate status, in-progress and pending work | ✅ Current |
+| [260321 jovian_subspecies_cepheus.md](./260321%20jovian_subspecies_cepheus.md) | Source material — Human subspecies of the Jovian States (2300AD setting supplement) | ✅ Reference |
+| [CE_Mneme_Character_Generation_mechanics.md](./CE_Mneme_Character_Generation_mechanics.md) | Mneme CE game rules the data schemas implement | ✅ Reference |
+| [CE ShipGen](https://github.com/Game-in-the-Brain/ce-shipgen) | Canonical GI7B UI Standard reference | ✅ Reference |
 
 ---
 
@@ -81,6 +86,11 @@ cecharactergen/
 ├── README.md                ← START HERE — milestones, docs state
 ├── PRD.md                   ← Product requirements & GI7B UI Standard
 ├── PROJECT_NOTES.md         ← Dev log, GI7B Standard, decisions, problems
+├── DATA_ARCHITECTURE.md     ← JSON schemas, DA-N.N refs, naming conventions
+├── UI_REQUIREMENTS.md       ← UI design decisions, phone-first, accordion UX
+├── UPDATE_LOG.md            ← Justin's working log & pre-coding gate status
+├── CE_Mneme_Character_Generation_mechanics.md ← Game rules reference
+├── 260321 jovian_subspecies_cepheus.md ← Jovian subspecies source material
 ├── data/                    ← JSON data tables (canonical/factory defaults)
 │   ├── cultures_names.json  ← Flat name array (culture/heritage/gender/name)
 │   ├── name_generation_rules.json ← Swappable generation mechanism
