@@ -35,7 +35,7 @@
 | **M2.5: Install UX** | PWA install prompt, auto-save, settings snapshots, CI/CD | ⏳ Pending |
 | **M2.6: Version Control** | Update prompts, version display, changelog, user-controlled updates | ⏳ Pending |
 | **M2.7: Tables In Play** | Active table list, switch tables per category, add/edit custom tables, export/import | ⏳ Pending |
-| **M2.8: Culture & Name Data** | Flat `cultures_names.json` (Excel/Sheets-editable); discrete `name_generation_rules.json` | ✅ Complete |
+| **M2.8: Culture & Name Data** | Flat `cultures_names.json` + `Open-Source-Names/` module (replaced Behind-The-Name with open source data) | ✅ Complete |
 | **M3: Full Careers** | All 24 careers, aging, mustering, advX/disX dice, Low-G Human, CE/Mneme career toggle | ⏳ Blocked on M2.7 |
 | **M4: Library** | Character library, batch generation, advanced export | ⏳ Pending |
 
@@ -94,6 +94,7 @@ cecharactergen/
 ├── data/                    ← JSON data tables (canonical/factory defaults)
 │   ├── cultures_names.json  ← Flat name array (culture/heritage/gender/name)
 │   ├── name_generation_rules.json ← Swappable generation mechanism
+├── Open-Source-Names/       ← Open source name generator (US Census, UK ONS, public domain data)
 │   ├── careers.json         ← All 24 careers in one file
 │   ├── races.json
 │   ├── skills.json

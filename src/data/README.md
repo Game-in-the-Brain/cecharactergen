@@ -2,20 +2,20 @@
 
 ## Overview
 
-The Name Generator creates culturally-authentic character names for the Cepheus Engine Character Generator. It uses data from the Behind The Name database combined with cultural surname pools.
+The Name Generator creates culturally-authentic character names for the Cepheus Engine Character Generator. It uses data from the Open-Source-Names module with culturally diverse name pools compiled from public domain and open data sources.
 
 ## Data Sources
 
 ### First Names Database (`names_database.json`)
-- **Source**: Behind The Name (behindthename.com)
-- **Total Names**: 20,505 names
-- **Cultures**: 84+ unique cultures
+- **Source**: Open-Source-Names (compiled from US Census, UK ONS, SSA, and other public domain sources)
+- **Total Names**: 20,000+ names
+- **Cultures**: 40+ unique cultures
 - **Format**: Organized by culture and gender (male, female, unisex)
 
 ### Surnames Database (`surnames_database.json`)
-- **Source**: Curated cultural surname lists
-- **Coverage**: 100+ cultures
-- **Format**: 30+ surnames per culture
+- **Source**: US Census Bureau, UK ONS, and other public domain surname data
+- **Coverage**: 40+ cultures
+- **Format**: 50+ surnames per culture
 
 ## Generation Rules
 

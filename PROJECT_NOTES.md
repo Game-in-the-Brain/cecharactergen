@@ -208,7 +208,7 @@ Landing Page (/)
 
 **World & Background:**
 - [ ] **homeworlds.json** — World types with background skills
-- [ ] **names.json** — Name generators by culture/species
+- [x] **Open-Source-Names/** — Name generators by culture/species (replaced Behind-The-Name with open source data)
 
 **Settings:**
 - [ ] **rules.json** — Rule variants (CE vs Mneme differences)
