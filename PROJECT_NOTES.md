@@ -208,7 +208,7 @@ Landing Page (/)
 
 **World & Background:**
 - [ ] **homeworlds.json** — World types with background skills
-- [x] **Open-Source-Names/** — Name generators by culture/species (replaced Behind-The-Name with open source data)
+- [x] **Open-Source-Names/** — Name generators by culture/species with **language drift** — names evolve across cultures based on phonological rules (DriftValue, target culture, exposure generations)
 
 **Settings:**
 - [ ] **rules.json** — Rule variants (CE vs Mneme differences)
