@@ -16,7 +16,6 @@
 | Document | Purpose | Status |
 |----------|---------|--------|
 | [PRD.md](./PRD.md) | Product Requirements — FRs, milestones, data schemas, GI7B UI Standard | ✅ Current |
-| [PROJECT_NOTES.md](./PROJECT_NOTES.md) | Dev log, GI7B UI Standard, architecture decisions, problems & solutions | ✅ Current |
 | [DATA_ARCHITECTURE.md](./DATA_ARCHITECTURE.md) | All JSON table schemas, DA-N.N references, naming conventions, generation pipeline order | ✅ Current |
 | [UI_REQUIREMENTS.md](./UI_REQUIREMENTS.md) | UI design decisions — phone-first, accordion UX, tile system, GI7B chrome, all FR-006–FR-010 decisions | ✅ Current |
 | [UPDATE_LOG.md](./UPDATE_LOG.md) | Justin's working log — pre-coding gate status, in-progress and pending work | ✅ Current |
