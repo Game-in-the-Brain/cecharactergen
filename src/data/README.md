@@ -2,7 +2,16 @@
 
 ## Overview
 
-The Name Generator creates culturally-authentic character names for the Cepheus Engine Character Generator. It uses data from the Open-Source-Names module with culturally diverse name pools compiled from public domain and open data sources.
+The Name Generator creates culturally-authentic character names for the Cepheus Engine Character Generator. It uses the **Open-Source-Names** module with **language drift** — names evolve across cultures based on phonological rules, simulating generations of cultural exposure in a sci-fi setting.
+
+### Language Drift Features
+
+- **Drift Value** (0-100): Controls how much a name has diverged
+- **Target Culture**: The culture the name is drifting toward
+- **Phonological Rules**: Each culture has characteristic sounds, substitutions, and syllable patterns
+- **Drift History**: Track name transformations across generations
+
+Example: `"Christopher"` with 75% drift toward Japanese → `"Kristōfā"`
 
 ## Data Sources
 

@@ -25,6 +25,25 @@
 
 ---
 
+## 🌍 Language Drift Name Generator
+
+The name generator features a unique **language drift** system that simulates how names evolve across cultures:
+
+- **Drift Value** (0-100): How much a name has changed from its original form
+- **Phonological Rules**: Each culture has strong/weak sounds and substitution patterns
+- **Cultural Exposure**: Names drift toward target cultures over generations
+- **40+ Cultures**: From Earth cultures to sci-fi naming conventions
+
+```typescript
+// Example: English name drifting toward Japanese over 3 generations
+const drifted = generateDriftedName({ culture: Culture.ENGLISH });
+// "Christopher" → 65% drift → "Kristōfā"
+```
+
+See [Open-Source-Names/README.md](./Open-Source-Names/README.md) for full documentation.
+
+---
+
 ## 🛣️ Milestones
 
 | Milestone | Scope | Status |
@@ -93,7 +112,7 @@ cecharactergen/
 ├── data/                    ← JSON data tables (canonical/factory defaults)
 │   ├── cultures_names.json  ← Flat name array (culture/heritage/gender/name)
 │   ├── name_generation_rules.json ← Swappable generation mechanism
-├── Open-Source-Names/       ← Open source name generator (US Census, UK ONS, public domain data)
+├── Open-Source-Names/       ← Open source name generator with **language drift** — names evolve across cultures based on phonological rules
 │   ├── careers.json         ← All 24 careers in one file
 │   ├── races.json
 │   ├── skills.json
